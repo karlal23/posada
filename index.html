@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación a la Posada</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('fondo posada.avif'); 
+            background-size: cover;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            text-align: center;
+            padding: 25px;
+        }
+        .header img {
+            max-width: 150px;
+            animation: bounce 2s infinite;
+        }
+        .header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5em;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select, .form-group button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: linear-gradient(90deg, #f7b733, #fc4a1a);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="lrr.png" alt="Logo de la Posada">
+            <h1>🎄 ¡Estás Invitado a Nuestra Posada! 🎄</h1>
+        </div>
+        <div class="content">
+            <p><strong>📅 Fecha:</strong> Viernes 20 Diciembre</p>
+            <p><strong>🕕 Hora:</strong> 8:00 PM</p>
+            <p><strong>📍 Lugar:</strong> Col. El Edén, calle Magnolia #17</p>
+            <p><strong>👗 Código de vestimenta:</strong> Suéter navideño</p>
+            <form id="confirmForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre del invitado:</label>
+                    <input type="text" id="nombre" placeholder="Escribe tu nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="acompanantes">¿Cuántos acompañantes traerás? (Máximo 2):</label>
+                    <select id="acompanantes" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <button type="button" onclick="confirmarAsistencia()">Confirmar Asistencia</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function confirmarAsistencia() {
+            const nombre = document.getElementById('nombre').value;
+            const acompanantes = document.getElementById('acompanantes').value;
+
+            if (nombre.trim() === "") {
+                alert("Por favor, escribe tu nombre.");
+                return;
+            }
+
+            const scriptURL = "https://script.google.com/macros/s/AKfycbzQIqpsoywJobguSn5ohdAvOG_P0sFZdSNbxjZZR2NwrDerSgzPKkpFpHLWrK4qpogD4A/exec";
+            const data = new FormData();
+            data.append('nombre', nombre);
+            data.append('acompanantes', acompanantes);
+
+            fetch(scriptURL, { method: 'POST', body: data })
+                .then(response => response.json())
+                .then(response => {
+                    alert(response.message);
+                    // Vacía el formulario después de enviar los datos
+                    document.getElementById('confirmForm').reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al enviar los datos.');
+                });
+        }
+    </script>
+</body>
+</html>
+
+
